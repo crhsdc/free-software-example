@@ -34,6 +34,71 @@ API Endpoints:
 └── /api/monitoring/   (System Resources)
 ```
 
+## EC2 Deployment Architecture
+
+```
+                    Internet Gateway
+                           │
+                           ▼
+    ┌─────────────────────────────────────────────────┐
+    │                AWS VPC                          │
+    │  ┌─────────────────────────────────────────┐    │
+    │  │            Public Subnet                │    │
+    │  │                                         │    │
+    │  │  ┌─────────────────────────────────┐    │    │
+    │  │  │         EC2 Instance            │    │    │
+    │  │  │      (Amazon Linux 2023)        │    │    │
+    │  │  │                                 │    │    │
+    │  │  │  ┌─────────────────────────┐    │    │    │
+    │  │  │  │   React Frontend        │    │    │    │
+    │  │  │  │   (Port 3000)           │    │    │    │
+    │  │  │  │   systemd service       │    │    │    │
+    │  │  │  └─────────────────────────┘    │    │    │
+    │  │  │              │                  │    │    │
+    │  │  │              ▼                  │    │    │
+    │  │  │  ┌─────────────────────────┐    │    │    │
+    │  │  │  │   Django Backend        │    │    │    │
+    │  │  │  │   (Port 8000)           │    │    │    │
+    │  │  │  │   systemd service       │    │    │    │
+    │  │  │  └─────────────────────────┘    │    │    │
+    │  │  │                                 │    │    │
+    │  │  │  IAM Instance Profile:          │    │    │
+    │  │  │  ApiMonitoringProfile           │    │    │
+    │  │  └─────────────────────────────────┘    │    │
+    │  │                                         │    │
+    │  └─────────────────────────────────────────┘    │
+    └─────────────────────────────────────────────────┘
+                           │
+                           ▼
+    ┌─────────────────────────────────────────────────┐
+    │                AWS Services                     │
+    │                                                 │
+    │  ┌─────────────────┐    ┌─────────────────────┐ │
+    │  │   S3 Bucket     │    │    DynamoDB Table   │ │
+    │  │ api-monitoring- │    │  api-data-metadata  │ │
+    │  │     data        │    │                     │ │
+    │  │                 │    │  ┌─────────────────┐│ │
+    │  │ ┌─────────────┐ │    │  │ Partition Key:  ││ │
+    │  │ │ JSON Data   │ │    │  │      id         ││ │
+    │  │ │ Storage     │ │    │  │                 ││ │
+    │  │ └─────────────┘ │    │  │ Attributes:     ││ │
+    │  └─────────────────┘    │  │ - timestamp     ││ │
+    │                         │  │ - data_size     ││ │
+    │                         │  │ - s3_key        ││ │
+    │                         │  └─────────────────┘│ │
+    │                         └─────────────────────┘ │
+    └─────────────────────────────────────────────────┘
+
+Security Group Rules:
+├── Port 22   (SSH)     ← 0.0.0.0/0
+├── Port 3000 (React)   ← 0.0.0.0/0  
+└── Port 8000 (Django)  ← 0.0.0.0/0
+
+Access URLs:
+├── Frontend: http://YOUR-EC2-IP:3000
+└── Backend:  http://YOUR-EC2-IP:8000
+```
+
 ## Features
 
 - **Real-time Monitoring**: Auto-refresh every 2 seconds
