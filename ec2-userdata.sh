@@ -4,7 +4,7 @@
 dnf update -y
 
 # Install Python 3 and pip
-dnf install -y python3 python3-pip git
+dnf install -y python3 python3-pip git awscli
 
 # Install Node.js 18
 dnf install -y nodejs npm
@@ -17,6 +17,9 @@ sudo -u ec2-user git clone https://github.com/crhsdc/free-software-example.git
 cd free-software-example/backend
 sudo -u ec2-user python3 -m venv venv
 sudo -u ec2-user bash -c 'source venv/bin/activate && pip install -r requirements.txt && python manage.py migrate'
+
+# Set AWS region
+echo 'export AWS_DEFAULT_REGION=us-east-1' >> /home/ec2-user/.bashrc
 
 # Setup React frontend
 cd ../frontend
