@@ -4,6 +4,10 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import random
 import time
+import json
+import boto3
+import uuid
+from datetime import datetime
 
 hello_messages = [
     'Hello, World!',
@@ -135,3 +139,49 @@ def system_monitoring(request):
     })
     response['Access-Control-Allow-Origin'] = '*'
     return response
+
+@csrf_exempt
+@api_view(['POST'])
+def store_data(request):
+    try:
+        data = json.loads(request.body)
+        
+        # Generate unique ID
+        data_id = str(uuid.uuid4())
+        
+        # Store in S3
+        s3 = boto3.client('s3')
+        s3.put_object(
+            Bucket='api-monitoring-data-itp-workshop',
+            Key=f'data/{data_id}.json',
+            Body=json.dumps(data),
+            ContentType='application/json'
+        )
+        
+        # Store metadata in DynamoDB
+        dynamodb = boto3.resource('dynamodb')
+        table = dynamodb.Table('api-data-metadata')
+        table.put_item(
+            Item={
+                'id': data_id,
+                'timestamp': datetime.utcnow().isoformat(),
+                'size': len(json.dumps(data)),
+                's3_key': f'data/{data_id}.json'
+            }
+        )
+        
+        response = Response({
+            'success': True,
+            'id': data_id,
+            'message': 'Data stored successfully'
+        })
+        response['Access-Control-Allow-Origin'] = '*'
+        return response
+        
+    except Exception as e:
+        response = Response({
+            'success': False,
+            'error': str(e)
+        }, status=500)
+        response['Access-Control-Allow-Origin'] = '*'
+        return response

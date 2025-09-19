@@ -8,4 +8,5 @@ urlpatterns = [
     path('api/third-party/', views.third_party_services, name='third_party'),
     path('api/auth/', views.auth_service, name='auth'),
     path('api/monitoring/', views.system_monitoring, name='monitoring'),
+    path('api/store/', views.store_data, name='store_data'),
 ]

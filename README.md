@@ -86,6 +86,7 @@ Access dashboard at `http://localhost:3000`
 - `GET /api/third-party/` - External service integrations
 - `GET /api/auth/` - Authentication service status
 - `GET /api/monitoring/` - System resource monitoring
+- `POST /api/store/` - Store JSON data in S3 and metadata in DynamoDB
 
 ## Simple Hosting with ngrok
 
@@ -202,12 +203,80 @@ ngrok http 3000
 - **Development Testing**: Test webhooks and external integrations
 - **Cross-platform**: Works on any device with internet access
 
+## AWS Resources Setup
+
+### Required AWS Resources
+
+Before deploying, create these AWS resources:
+
+**1. S3 Bucket:**
+```bash
+aws s3 mb s3://api-monitoring-data
+```
+
+**2. DynamoDB Table:**
+```bash
+aws dynamodb create-table \
+    --table-name api-data-metadata \
+    --attribute-definitions AttributeName=id,AttributeType=S \
+    --key-schema AttributeName=id,KeyType=HASH \
+    --billing-mode PAY_PER_REQUEST
+```
+
+**3. IAM Role for EC2:**
+```bash
+# Create trust policy
+cat > trust-policy.json << EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "ec2.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+        }
+    ]
+}
+EOF
+
+# Create role
+aws iam create-role --role-name ApiMonitoringRole --assume-role-policy-document file://trust-policy.json
+
+# Create policy
+cat > permissions-policy.json << EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:PutObject",
+                "dynamodb:PutItem"
+            ],
+            "Resource": [
+                "arn:aws:s3:::api-monitoring-data/*",
+                "arn:aws:dynamodb:*:*:table/api-data-metadata"
+            ]
+        }
+    ]
+}
+EOF
+
+aws iam create-policy --policy-name ApiMonitoringPolicy --policy-document file://permissions-policy.json
+aws iam attach-role-policy --role-name ApiMonitoringRole --policy-arn arn:aws:iam::YOUR-ACCOUNT-ID:policy/ApiMonitoringPolicy
+aws iam create-instance-profile --instance-profile-name ApiMonitoringProfile
+aws iam add-role-to-instance-profile --instance-profile-name ApiMonitoringProfile --role-name ApiMonitoringRole
+```
+
 ## EC2 Deployment
 
 ### 1. Launch EC2 Instance
 
 - **AMI**: Amazon Linux 2023
 - **Instance Type**: t2.micro (free tier)
+- **IAM Instance Profile**: ApiMonitoringProfile
 - **User Data**: Use `ec2-userdata.sh` script
 - **Security Group**: Allow ports 22, 3000, 8000
 
@@ -250,6 +319,11 @@ curl http://localhost:8000/api/hello/
 
 # Test from external IP
 curl http://YOUR-EC2-IP:8000/api/hello/
+
+# Test data storage endpoint
+curl -X POST http://YOUR-EC2-IP:8000/api/store/ \
+  -H "Content-Type: application/json" \
+  -d '{"test": "data", "timestamp": "2024-01-01"}'
 ```
 
 **View Logs:**
