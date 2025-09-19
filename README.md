@@ -2,6 +2,38 @@
 
 A professional monitoring dashboard for API health with Django backend and React frontend.
 
+## Architecture Diagram
+
+```
+┌─────────────────┐    HTTP Requests     ┌─────────────────┐
+│                 │    (every 2 sec)     │                 │
+│  React Frontend │◄────────────────────►│  Django Backend │
+│  (Port 3000)    │                      │  (Port 8000)    │
+│                 │                      │                 │
+└─────────────────┘                      └─────────────────┘
+         │                                         │
+         │                                         │
+    ┌────▼────┐                              ┌────▼────┐
+    │ ngrok   │                              │ ngrok   │
+    │ Tunnel  │                              │ Tunnel  │
+    │ (HTTPS) │                              │ (HTTPS) │
+    └────┬────┘                              └────┬────┘
+         │                                         │
+         ▼                                         ▼
+┌─────────────────┐                      ┌─────────────────┐
+│   Public URL    │                      │   Public URL    │
+│ def456.ngrok.io │                      │ abc123.ngrok.io │
+└─────────────────┘                      └─────────────────┘
+
+API Endpoints:
+├── /api/hello/        (Hello Service)
+├── /api/status/       (System Status)
+├── /api/database/     (DB Health)
+├── /api/third-party/  (External APIs)
+├── /api/auth/         (Authentication)
+└── /api/monitoring/   (System Resources)
+```
+
 ## Features
 
 - **Real-time Monitoring**: Auto-refresh every 2 seconds
