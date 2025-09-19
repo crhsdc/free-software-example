@@ -25,7 +25,7 @@ function App() {
     const fetchHello = async () => {
         const startTime = Date.now();
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/hello/');
+            const response = await fetch(`${window.location.protocol}//${window.location.hostname}:8000/api/hello/`);
             const data = await response.json();
             const responseTime = Date.now() - startTime;
             setHelloData(data);
@@ -41,7 +41,7 @@ function App() {
     const fetchStatus = async () => {
         const startTime = Date.now();
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/status/');
+            const response = await fetch(`${window.location.protocol}//${window.location.hostname}:8000/api/status/`);
             const data = await response.json();
             const responseTime = Date.now() - startTime;
             setStatusData(data);
@@ -67,7 +67,7 @@ function App() {
     const fetchDatabase = async () => {
         const startTime = Date.now();
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/database/');
+            const response = await fetch(`${window.location.protocol}//${window.location.hostname}:8000/api/database/`);
             const data = await response.json();
             const responseTime = Date.now() - startTime;
             setDbData(data);
@@ -83,7 +83,7 @@ function App() {
     const fetchThirdParty = async () => {
         const startTime = Date.now();
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/third-party/');
+            const response = await fetch(`${window.location.protocol}//${window.location.hostname}:8000/api/third-party/`);
             const data = await response.json();
             const responseTime = Date.now() - startTime;
             setThirdPartyData(data);
@@ -99,7 +99,7 @@ function App() {
     const fetchAuth = async () => {
         const startTime = Date.now();
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/auth/');
+            const response = await fetch(`${window.location.protocol}//${window.location.hostname}:8000/api/auth/`);
             const data = await response.json();
             const responseTime = Date.now() - startTime;
             setAuthData(data);
@@ -115,7 +115,7 @@ function App() {
     const fetchMonitoring = async () => {
         const startTime = Date.now();
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/monitoring/');
+            const response = await fetch(`${window.location.protocol}//${window.location.hostname}:8000/api/monitoring/`);
             const data = await response.json();
             const responseTime = Date.now() - startTime;
             setMonitoringData(data);
