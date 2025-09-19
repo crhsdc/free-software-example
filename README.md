@@ -202,12 +202,84 @@ ngrok http 3000
 - **Development Testing**: Test webhooks and external integrations
 - **Cross-platform**: Works on any device with internet access
 
+## EC2 Deployment
+
+### 1. Launch EC2 Instance
+
+- **AMI**: Amazon Linux 2023
+- **Instance Type**: t2.micro (free tier)
+- **User Data**: Use `ec2-userdata.sh` script
+- **Security Group**: Allow ports 22, 3000, 8000
+
+### 2. Security Group Configuration
+
+| Type | Protocol | Port | Source | Description |
+|------|----------|------|--------|--------------|
+| SSH | TCP | 22 | 0.0.0.0/0 | SSH access |
+| Custom TCP | TCP | 8000 | 0.0.0.0/0 | Django API |
+| Custom TCP | TCP | 3000 | 0.0.0.0/0 | React Frontend |
+
+### 3. Access Your Application
+
+- **Backend API**: `http://YOUR-EC2-IP:8000`
+- **Frontend Dashboard**: `http://YOUR-EC2-IP:3000`
+- **API Test**: `curl http://YOUR-EC2-IP:8000/api/hello/`
+
+### 4. EC2 Troubleshooting Commands
+
+**Check Service Status:**
+```bash
+# Check both services
+sudo systemctl status django-api react-app
+
+# Individual service status
+sudo systemctl status django-api
+sudo systemctl status react-app
+```
+
+**Verify Ports:**
+```bash
+# Check listening ports
+sudo netstat -tlnp | grep -E ':(3000|8000)'
+```
+
+**Test Endpoints:**
+```bash
+# Test Django API locally
+curl http://localhost:8000/api/hello/
+
+# Test from external IP
+curl http://YOUR-EC2-IP:8000/api/hello/
+```
+
+**View Logs:**
+```bash
+# Service logs
+sudo journalctl -u django-api -f
+sudo journalctl -u react-app -f
+
+# Recent logs
+sudo journalctl -u django-api --since "10 minutes ago"
+```
+
+**Restart Services:**
+```bash
+# Restart if needed
+sudo systemctl restart django-api react-app
+```
+
+**Quick Health Check:**
+```bash
+curl -s http://localhost:8000/api/hello/ && echo "Django OK" || echo "Django FAIL"
+curl -s http://localhost:3000 && echo "React OK" || echo "React FAIL"
+```
+
 ## Technologies
 
 - **Backend**: Django, Django REST Framework
 - **Frontend**: React (CDN), Vanilla JavaScript
 - **Styling**: CSS-in-JS with professional dark theme
-- **Hosting**: ngrok for simple public access
+- **Hosting**: ngrok for development, EC2 for production
 
 ## Development
 
