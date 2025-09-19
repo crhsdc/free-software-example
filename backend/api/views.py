@@ -151,14 +151,11 @@ def store_data(request):
         # Generate unique ID
         data_id = str(uuid.uuid4())
         
-        # Configure boto3 for EC2 IAM role
-        config = Config(
-            region_name=os.environ.get('AWS_DEFAULT_REGION', 'us-east-1'),
-            retries={'max_attempts': 3}
-        )
+        # Configure boto3 session for EC2 IAM role
+        session = boto3.Session()
         
         # Store in S3
-        s3 = boto3.client('s3', config=config)
+        s3 = session.client('s3', region_name='us-east-1')
         s3.put_object(
             Bucket='api-monitoring-data-itp-workshop',
             Key=f'data/{data_id}.json',
@@ -167,7 +164,7 @@ def store_data(request):
         )
         
         # Store metadata in DynamoDB
-        dynamodb = boto3.resource('dynamodb', config=config)
+        dynamodb = session.resource('dynamodb', region_name='us-east-1')
         table = dynamodb.Table('api-data-metadata')
         table.put_item(
             Item={
