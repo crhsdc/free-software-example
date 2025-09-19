@@ -40,3 +40,8 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer',
     ]
 }
+
+# AWS Configuration for EC2 IAM Role
+AWS_DEFAULT_REGION = os.environ.get('AWS_DEFAULT_REGION', 'us-east-1')
+AWS_S3_REGION_NAME = AWS_DEFAULT_REGION
+AWS_DYNAMODB_REGION_NAME = AWS_DEFAULT_REGION

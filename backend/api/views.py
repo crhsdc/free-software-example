@@ -6,8 +6,10 @@ import random
 import time
 import json
 import boto3
+from botocore.config import Config
 import uuid
 from datetime import datetime
+import os
 
 hello_messages = [
     'Hello, World!',
@@ -149,8 +151,14 @@ def store_data(request):
         # Generate unique ID
         data_id = str(uuid.uuid4())
         
+        # Configure boto3 for EC2 IAM role
+        config = Config(
+            region_name=os.environ.get('AWS_DEFAULT_REGION', 'us-east-1'),
+            retries={'max_attempts': 3}
+        )
+        
         # Store in S3
-        s3 = boto3.client('s3')
+        s3 = boto3.client('s3', config=config)
         s3.put_object(
             Bucket='api-monitoring-data-itp-workshop',
             Key=f'data/{data_id}.json',
@@ -159,7 +167,7 @@ def store_data(request):
         )
         
         # Store metadata in DynamoDB
-        dynamodb = boto3.resource('dynamodb')
+        dynamodb = boto3.resource('dynamodb', config=config)
         table = dynamodb.Table('api-data-metadata')
         table.put_item(
             Item={
