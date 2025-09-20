@@ -142,9 +142,9 @@ function App() {
 
     const getStatusColor = (health) => {
         switch(health) {
-            case 'healthy': return '#00d4aa';
-            case 'warning': return '#ffa726';
-            case 'error': return '#ef5350';
+            case 'healthy': return '#207ef8ff';
+            case 'warning': return '#d1ce25ff';
+            case 'error': return '#9c0300ff';
             default: return '#757575';
         }
     };
