@@ -145,7 +145,7 @@ function App() {
             case 'healthy': return '#00d4aa';
             case 'warning': return '#ffa726';
             case 'error': return '#ef5350';
-            default: return '#757575';
+            default: return '#00d4aa';
         }
     };
 
@@ -166,7 +166,7 @@ function App() {
         padding: '20px',
         margin: '10px',
         color: 'white',
-        border: '1px solid #313244',
+        border: '1px solid #00d4aa',
         minWidth: '300px',
         position: 'relative'
     };
@@ -219,7 +219,7 @@ function App() {
                     <div style={{ fontSize: '2em', color: '#74c0fc', fontWeight: 'bold' }}>
                         {metrics.totalRequests}
                     </div>
-                    <div style={{ fontSize: '0.9em', color: '#6c7086' }}>Total Requests</div>
+                    <div style={{ fontSize: '0.9em', color: '#1c3bebff' }}>Total Requests</div>
                 </div>
                 <div style={metricCardStyle}>
                     <div style={{ fontSize: '2em', color: metrics.successRate > 95 ? '#00d4aa' : '#ffa726', fontWeight: 'bold' }}>
@@ -228,7 +228,7 @@ function App() {
                     <div style={{ fontSize: '0.9em', color: '#6c7086' }}>Success Rate</div>
                 </div>
                 <div style={metricCardStyle}>
-                    <div style={{ fontSize: '2em', color: '#f38ba8', fontWeight: 'bold' }}>
+                    <div style={{ fontSize: '2em', color: '#ff0048ff', fontWeight: 'bold' }}>
                         {metrics.avgResponseTime}ms
                     </div>
                     <div style={{ fontSize: '0.9em', color: '#6c7086' }}>Avg Response</div>
@@ -247,7 +247,7 @@ function App() {
                     <div style={{
                         position: 'absolute',
                         top: '15px',
-                        right: '15px',
+                        right: '16px',
                         width: '12px',
                         height: '12px',
                         borderRadius: '50%',
