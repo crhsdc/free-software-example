@@ -183,9 +183,10 @@ function App() {
             <div style={{ textAlign: 'center', marginBottom: '30px' }}>
                 <h1 style={{ 
                     color: '#cdd6f4', 
-                    fontSize: '2.2em', 
+                    fontSize: '15px', 
                     margin: '0',
-                    fontWeight: '600'
+                    fontWeight: '600',
+                    fontFamily: 'Arial, sans-serif'
                 }}>⚡ API Health Monitor</h1>
                 <p style={{ color: '#6c7086', fontSize: '1em', margin: '5px 0' }}>
                     Real-time monitoring • Last updated: {metrics.lastUpdate.toLocaleTimeString()}
@@ -254,7 +255,7 @@ function App() {
                         background: getStatusColor(helloHealth),
                         boxShadow: `0 0 10px ${getStatusColor(helloHealth)}`
                     }}></div>
-                    <h3 style={{ margin: '0 0 15px 0', fontSize: '1.3em', color: '#cdd6f4' }}>
+                    <h3 style={{ margin: '0 0 15px 0', fontSize: '15px', color: '#cdd6f4', fontFamily: 'Arial, sans-serif' }}>
                         📡 Hello Service
                     </h3>
                     <div style={{ 
@@ -289,7 +290,7 @@ function App() {
                         background: getStatusColor(statusHealth),
                         boxShadow: `0 0 10px ${getStatusColor(statusHealth)}`
                     }}></div>
-                    <h3 style={{ margin: '0 0 15px 0', fontSize: '1.3em', color: '#cdd6f4' }}>
+                    <h3 style={{ margin: '0 0 15px 0', fontSize: '15px', color: '#cdd6f4', fontFamily: 'Arial, sans-serif' }}>
                         🔧 Status Service
                     </h3>
                     <div style={{ 
@@ -324,7 +325,7 @@ function App() {
                         background: getStatusColor(dbHealth),
                         boxShadow: `0 0 10px ${getStatusColor(dbHealth)}`
                     }}></div>
-                    <h3 style={{ margin: '0 0 15px 0', fontSize: '1.3em', color: '#cdd6f4' }}>
+                    <h3 style={{ margin: '0 0 15px 0', fontSize: '15px', color: '#cdd6f4', fontFamily: 'Arial, sans-serif' }}>
                         🗄️ Database
                     </h3>
                     <div style={{ 
@@ -366,7 +367,7 @@ function App() {
                         background: getStatusColor(thirdPartyHealth),
                         boxShadow: `0 0 10px ${getStatusColor(thirdPartyHealth)}`
                     }}></div>
-                    <h3 style={{ margin: '0 0 15px 0', fontSize: '1.3em', color: '#cdd6f4' }}>
+                    <h3 style={{ margin: '0 0 15px 0', fontSize: '15px', color: '#cdd6f4', fontFamily: 'Arial, sans-serif' }}>
                         🔗 Third Party
                     </h3>
                     <div style={{ 
@@ -408,7 +409,7 @@ function App() {
                         background: getStatusColor(authHealth),
                         boxShadow: `0 0 10px ${getStatusColor(authHealth)}`
                     }}></div>
-                    <h3 style={{ margin: '0 0 15px 0', fontSize: '1.3em', color: '#cdd6f4' }}>
+                    <h3 style={{ margin: '0 0 15px 0', fontSize: '15px', color: '#cdd6f4', fontFamily: 'Arial, sans-serif' }}>
                         🔐 Authentication
                     </h3>
                     <div style={{ 
@@ -450,7 +451,7 @@ function App() {
                         background: getStatusColor(monitoringHealth),
                         boxShadow: `0 0 10px ${getStatusColor(monitoringHealth)}`
                     }}></div>
-                    <h3 style={{ margin: '0 0 15px 0', fontSize: '1.3em', color: '#cdd6f4' }}>
+                    <h3 style={{ margin: '0 0 15px 0', fontSize: '15px', color: '#cdd6f4', fontFamily: 'Arial, sans-serif' }}>
                         📊 System Monitor
                     </h3>
                     <div style={{ 
