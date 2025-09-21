@@ -182,7 +182,7 @@ function App() {
             {/* Header */}
             <div style={{ textAlign: 'center', marginBottom: '30px' }}>
                 <h1 style={{ 
-                    color: '#cdd6f4jmhggh', 
+                    color: '#024A86', 
                     fontSize: '2.2em', 
                     margin: '0',
                     fontWeight: '600'
