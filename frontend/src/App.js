@@ -4,6 +4,7 @@ function App() {
     const [helloData, setHelloData] = useState(null);
     const [statusData, setStatusData] = useState(null);
     const [dbData, setDbData] = useState(null);
+    const [refreshInterval, setRefreshInterval] = useState(5000);
     const [thirdPartyData, setThirdPartyData] = useState(null);
     const [authData, setAuthData] = useState(null);
     const [monitoringData, setMonitoringData] = useState(null);
@@ -135,10 +136,10 @@ function App() {
     };
 
     useEffect(() => {
-        fetchAll();
-        const interval = setInterval(fetchAll, 2000);
-        return () => clearInterval(interval);
-    }, []);
+    fetchAll();
+    const interval = setInterval(fetchAll, refreshInterval);
+    return () => clearInterval(interval);
+}, [refreshInterval]);
 
     const getStatusColor = (health, service = null) => {
         // Si el servicio es 'status', usar morado
