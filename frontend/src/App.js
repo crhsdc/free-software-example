@@ -140,33 +140,44 @@ function App() {
         return () => clearInterval(interval);
     }, []);
 
-    const getStatusColor = (health) => {
+    const getStatusColor = (health, service = null) => {
+        // Si el servicio es 'status', usar morado
+        if (service === 'status') {
+            switch(health) {
+                case 'healthy': return '#b162ff'; // morado
+                case 'warning': return '#ffa726';
+                case 'error': return '#ef5350';
+                default: return '#757575';
+            }
+        }
         switch(health) {
-            case 'healthy': return '#00d4aa';
-            case 'warning': return '#ffa726';
-            case 'error': return '#ef5350';
-            default: return '#757575';
+
+            case 'healthy': return '#a259f7'; // Morado
+            case 'warning': return '#a259f7';
+            case 'error': return '#a259f7';
+            default: return '#a259f7';
+
         }
     };
 
     const metricCardStyle = {
-        background: '#1e1e2e',
+        background: '#a259f7',
         borderRadius: '12px',
         padding: '20px',
         margin: '10px',
         color: 'white',
-        border: '1px solid #313244',
+        border: '1px solid #7c3aed',
         minWidth: '200px',
         textAlign: 'center'
     };
 
     const serviceCardStyle = {
-        background: '#1e1e2e',
+        background: '#a259f7',
         borderRadius: '12px',
         padding: '20px',
         margin: '10px',
         color: 'white',
-        border: '1px solid #313244',
+        border: '1px solid #7c3aed',
         minWidth: '300px',
         position: 'relative'
     };
@@ -174,7 +185,7 @@ function App() {
     return (
         <div style={{ 
             fontFamily: 'Inter, system-ui, sans-serif',
-            background: '#0f0f23',
+        background: '#a259f7',
             minHeight: '100vh',
             padding: '20px',
             color: 'white'
@@ -182,17 +193,19 @@ function App() {
             {/* Header */}
             <div style={{ textAlign: 'center', marginBottom: '30px' }}>
                 <h1 style={{ 
+
                     color: '#024A86', 
+
                     fontSize: '2.2em', 
                     margin: '0',
                     fontWeight: '600'
                 }}>⚡ API Health Monitor</h1>
-                <p style={{ color: '#6c7086', fontSize: '1em', margin: '5px 0' }}>
+                <p style={{ color: '#7c3aed', fontSize: '1em', margin: '5px 0' }}>
                     Real-time monitoring • Last updated: {metrics.lastUpdate.toLocaleTimeString()}
                 </p>
                 <div style={{
                     display: 'inline-block',
-                    background: isLoading ? '#ffa726' : '#00d4aa',
+                    background: isLoading ? '#a259f7' : '#7c3aed',
                     padding: '4px 12px',
                     borderRadius: '20px',
                     fontSize: '0.8em',
@@ -210,28 +223,28 @@ function App() {
                 marginBottom: '30px'
             }}>
                 <div style={metricCardStyle}>
-                    <div style={{ fontSize: '2em', color: '#00d4aa', fontWeight: 'bold' }}>
+                    <div style={{ fontSize: '2em', color: '#7c3aed', fontWeight: 'bold' }}>
                         {Math.floor(metrics.uptime / 60)}m {metrics.uptime % 60}s
                     </div>
-                    <div style={{ fontSize: '0.9em', color: '#6c7086' }}>Uptime</div>
+                    <div style={{ fontSize: '0.9em', color: '#7c3aed' }}>Uptime</div>
                 </div>
                 <div style={metricCardStyle}>
-                    <div style={{ fontSize: '2em', color: '#74c0fc', fontWeight: 'bold' }}>
+                    <div style={{ fontSize: '2em', color: '#7c3aed', fontWeight: 'bold' }}>
                         {metrics.totalRequests}
                     </div>
-                    <div style={{ fontSize: '0.9em', color: '#6c7086' }}>Total Requests</div>
+                    <div style={{ fontSize: '0.9em', color: '#7c3aed' }}>Total Requests</div>
                 </div>
                 <div style={metricCardStyle}>
-                    <div style={{ fontSize: '2em', color: metrics.successRate > 95 ? '#00d4aa' : '#ffa726', fontWeight: 'bold' }}>
+                    <div style={{ fontSize: '2em', color: '#7c3aed', fontWeight: 'bold' }}>
                         {metrics.successRate.toFixed(1)}%
                     </div>
-                    <div style={{ fontSize: '0.9em', color: '#6c7086' }}>Success Rate</div>
+                    <div style={{ fontSize: '0.9em', color: '#7c3aed' }}>Success Rate</div>
                 </div>
                 <div style={metricCardStyle}>
-                    <div style={{ fontSize: '2em', color: '#f38ba8', fontWeight: 'bold' }}>
+                    <div style={{ fontSize: '2em', color: '#7c3aed', fontWeight: 'bold' }}>
                         {metrics.avgResponseTime}ms
                     </div>
-                    <div style={{ fontSize: '0.9em', color: '#6c7086' }}>Avg Response</div>
+                    <div style={{ fontSize: '0.9em', color: '#7c3aed' }}>Avg Response</div>
                 </div>
             </div>
             
@@ -247,18 +260,18 @@ function App() {
                     <div style={{
                         position: 'absolute',
                         top: '15px',
-                        right: '15px',
+                        right: '16px',
                         width: '12px',
                         height: '12px',
                         borderRadius: '50%',
                         background: getStatusColor(helloHealth),
                         boxShadow: `0 0 10px ${getStatusColor(helloHealth)}`
                     }}></div>
-                    <h3 style={{ margin: '0 0 15px 0', fontSize: '1.3em', color: '#cdd6f4' }}>
+                    <h3 style={{ margin: '0 0 15px 0', fontSize: '1.3em', color: '#7c3aed' }}>
                         📡 Hello Service
                     </h3>
                     <div style={{ 
-                        background: '#313244', 
+                        background: '#7c3aed', 
                         padding: '15px', 
                         borderRadius: '8px',
                         marginBottom: '10px'
@@ -271,7 +284,7 @@ function App() {
                             <div style={{ opacity: 0.6 }}>Initializing...</div>
                         )}
                     </div>
-                    <div style={{ fontSize: '0.8em', color: '#6c7086' }}>
+                    <div style={{ fontSize: '0.8em', color: '#7c3aed' }}>
                         Status: <span style={{ color: getStatusColor(helloHealth), fontWeight: 'bold' }}>
                             {helloHealth.toUpperCase()}
                         </span>
@@ -286,14 +299,14 @@ function App() {
                         width: '12px',
                         height: '12px',
                         borderRadius: '50%',
-                        background: getStatusColor(statusHealth),
-                        boxShadow: `0 0 10px ${getStatusColor(statusHealth)}`
+                        background: getStatusColor(statusHealth, 'status'),
+                        boxShadow: `0 0 10px ${getStatusColor(statusHealth, 'status')}`
                     }}></div>
-                    <h3 style={{ margin: '0 0 15px 0', fontSize: '1.3em', color: '#cdd6f4' }}>
+                    <h3 style={{ margin: '0 0 15px 0', fontSize: '1.3em', color: '#7c3aed' }}>
                         🔧 Status Service
                     </h3>
                     <div style={{ 
-                        background: '#313244', 
+                        background: '#7c3aed', 
                         padding: '15px', 
                         borderRadius: '8px',
                         marginBottom: '10px'
@@ -306,7 +319,7 @@ function App() {
                             <div style={{ opacity: 0.6 }}>Initializing...</div>
                         )}
                     </div>
-                    <div style={{ fontSize: '0.8em', color: '#6c7086' }}>
+                    <div style={{ fontSize: '0.8em', color: '#7c3aed' }}>
                         Status: <span style={{ color: getStatusColor(statusHealth), fontWeight: 'bold' }}>
                             {statusHealth.toUpperCase()}
                         </span>
@@ -324,11 +337,11 @@ function App() {
                         background: getStatusColor(dbHealth),
                         boxShadow: `0 0 10px ${getStatusColor(dbHealth)}`
                     }}></div>
-                    <h3 style={{ margin: '0 0 15px 0', fontSize: '1.3em', color: '#cdd6f4' }}>
+                    <h3 style={{ margin: '0 0 15px 0', fontSize: '1.3em', color: '#7c3aed' }}>
                         🗄️ Database
                     </h3>
                     <div style={{ 
-                        background: '#313244', 
+                        background: '#7c3aed', 
                         padding: '15px', 
                         borderRadius: '8px',
                         marginBottom: '10px'
@@ -348,7 +361,7 @@ function App() {
                             <div style={{ opacity: 0.6 }}>Initializing...</div>
                         )}
                     </div>
-                    <div style={{ fontSize: '0.8em', color: '#6c7086' }}>
+                    <div style={{ fontSize: '0.8em', color: '#7c3aed' }}>
                         Status: <span style={{ color: getStatusColor(dbHealth), fontWeight: 'bold' }}>
                             {dbHealth.toUpperCase()}
                         </span>
@@ -366,11 +379,11 @@ function App() {
                         background: getStatusColor(thirdPartyHealth),
                         boxShadow: `0 0 10px ${getStatusColor(thirdPartyHealth)}`
                     }}></div>
-                    <h3 style={{ margin: '0 0 15px 0', fontSize: '1.3em', color: '#cdd6f4' }}>
+                    <h3 style={{ margin: '0 0 15px 0', fontSize: '1.3em', color: '#7c3aed' }}>
                         🔗 Third Party
                     </h3>
                     <div style={{ 
-                        background: '#313244', 
+                        background: '#7c3aed', 
                         padding: '15px', 
                         borderRadius: '8px',
                         marginBottom: '10px'
@@ -390,7 +403,7 @@ function App() {
                             <div style={{ opacity: 0.6 }}>Initializing...</div>
                         )}
                     </div>
-                    <div style={{ fontSize: '0.8em', color: '#6c7086' }}>
+                    <div style={{ fontSize: '0.8em', color: '#7c3aed' }}>
                         Status: <span style={{ color: getStatusColor(thirdPartyHealth), fontWeight: 'bold' }}>
                             {thirdPartyHealth.toUpperCase()}
                         </span>
@@ -491,11 +504,11 @@ function App() {
                     onClick={fetchAll}
                     disabled={isLoading}
                     style={{
-                        background: '#313244',
-                        border: '1px solid #45475a',
+                        background: '#a259f7',
+                        border: '1px solid #7c3aed',
                         borderRadius: '8px',
                         padding: '12px 24px',
-                        color: '#cdd6f4',
+                        color: '#fff',
                         fontSize: '1em',
                         cursor: isLoading ? 'not-allowed' : 'pointer',
                         transition: 'all 0.2s ease',
@@ -503,11 +516,11 @@ function App() {
                     }}
                     onMouseOver={(e) => {
                         if (!isLoading) {
-                            e.target.style.background = '#45475a';
+                            e.target.style.background = '#7c3aed';
                         }
                     }}
                     onMouseOut={(e) => {
-                        e.target.style.background = '#313244';
+                            e.target.style.background = '#a259f7';
                     }}
                 >
                     {isLoading ? '⏳ Refreshing...' : '🔄 Manual Refresh'}
