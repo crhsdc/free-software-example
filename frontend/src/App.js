@@ -140,7 +140,16 @@ function App() {
         return () => clearInterval(interval);
     }, []);
 
-    const getStatusColor = (health) => {
+    const getStatusColor = (health, service = null) => {
+        // Si el servicio es 'status', usar morado
+        if (service === 'status') {
+            switch(health) {
+                case 'healthy': return '#b162ff'; // morado
+                case 'warning': return '#ffa726';
+                case 'error': return '#ef5350';
+                default: return '#757575';
+            }
+        }
         switch(health) {
             case 'healthy': return '#00d4aa';
             case 'warning': return '#ffa726';
@@ -286,8 +295,8 @@ function App() {
                         width: '12px',
                         height: '12px',
                         borderRadius: '50%',
-                        background: getStatusColor(statusHealth),
-                        boxShadow: `0 0 10px ${getStatusColor(statusHealth)}`
+                        background: getStatusColor(statusHealth, 'status'),
+                        boxShadow: `0 0 10px ${getStatusColor(statusHealth, 'status')}`
                     }}></div>
                     <h3 style={{ margin: '0 0 15px 0', fontSize: '1.3em', color: '#cdd6f4' }}>
                         🔧 Status Service
